@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useState } from 'react'
@@ -36,23 +35,122 @@ export default function ParticipationForm() {
 
   const totalSteps = 2 + phasePrompts.length
 
+  // Validation helper functions
+  const validateName = (name: string) => {
+    const nameRegex = /^[a-zA-Z\s]+$/
+    if (!name.trim()) return 'Name is required'
+    if (name.trim().length < 2) return 'Name must be at least 2 characters'
+    if (name.trim().length > 50) return 'Name must not exceed 50 characters'
+    if (!nameRegex.test(name)) return 'Name can only contain letters and spaces'
+    return ''
+  }
+
+  const validateCity = (city: string) => {
+    const cityRegex = /^[a-zA-Z\s]+$/
+    if (!city.trim()) return 'City is required'
+    if (city.trim().length < 2) return 'City must be at least 2 characters'
+    if (city.trim().length > 50) return 'City name is too long'
+    if (!cityRegex.test(city)) return 'City can only contain letters and spaces'
+    return ''
+  }
+
+  const validateOccupation = (occupation: string) => {
+    if (!occupation.trim()) return 'This field is required'
+    if (occupation.trim().length < 2) return 'Please enter at least 2 characters'
+    if (occupation.trim().length > 100) return 'Please keep it under 100 characters'
+    return ''
+  }
+
+  const validateAge = (age: string) => {
+    const ageNum = parseInt(age)
+    if (!age) return 'Age is required'
+    if (isNaN(ageNum)) return 'Age must be a number'
+    if (ageNum < 13) return 'You must be at least 13 years old'
+    if (ageNum > 100) return 'Please enter a valid age'
+    return ''
+  }
+
+  const validateContact = (contact: string) => {
+    if (!contact.trim()) return 'Email or phone is required'
+    if (!validateEmail(contact) && !validatePhone(contact)) {
+      return 'Please enter a valid email or 10-digit phone number'
+    }
+    return ''
+  }
+
   const validateBasicInfo = () => {
     const newErrors: Record<string, string> = {}
 
-    if (!formData.name.trim()) newErrors.name = 'Name is required'
-    if (!formData.contact.trim()) {
-      newErrors.contact = 'Email or phone is required'
-    } else if (!validateEmail(formData.contact) && !validatePhone(formData.contact)) {
-      newErrors.contact = 'Please enter a valid email or 10-digit phone number'
-    }
-    if (!formData.age || parseInt(formData.age) < 13 || parseInt(formData.age) > 100) {
-      newErrors.age = 'Please enter a valid age (13-100)'
-    }
-    if (!formData.city.trim()) newErrors.city = 'City is required'
-    if (!formData.studyOrOccupation.trim()) newErrors.studyOrOccupation = 'This field is required'
+    const nameError = validateName(formData.name)
+    if (nameError) newErrors.name = nameError
+
+    const contactError = validateContact(formData.contact)
+    if (contactError) newErrors.contact = contactError
+
+    const ageError = validateAge(formData.age)
+    if (ageError) newErrors.age = ageError
+
+    const cityError = validateCity(formData.city)
+    if (cityError) newErrors.city = cityError
+
+    const occupationError = validateOccupation(formData.studyOrOccupation)
+    if (occupationError) newErrors.studyOrOccupation = occupationError
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
+  }
+
+  // Real-time validation handlers
+  const handleNameChange = (value: string) => {
+    // Only allow letters and spaces - prevent numbers and special characters
+    const sanitized = value.replace(/[^a-zA-Z\s]/g, '')
+    setFormData({ ...formData, name: sanitized })
+    
+    // Clear error when user starts typing
+    if (errors.name && sanitized.trim()) {
+      const error = validateName(sanitized)
+      setErrors({ ...errors, name: error })
+    }
+  }
+
+  const handleCityChange = (value: string) => {
+    // Only allow letters and spaces - prevent numbers and special characters
+    const sanitized = value.replace(/[^a-zA-Z\s]/g, '')
+    setFormData({ ...formData, city: sanitized })
+    
+    if (errors.city && sanitized.trim()) {
+      const error = validateCity(sanitized)
+      setErrors({ ...errors, city: error })
+    }
+  }
+
+  const handleAgeChange = (value: string) => {
+    // Only allow numbers
+    const sanitized = value.replace(/[^0-9]/g, '')
+    setFormData({ ...formData, age: sanitized })
+    
+    if (errors.age) {
+      const error = validateAge(sanitized)
+      setErrors({ ...errors, age: error })
+    }
+  }
+
+  const handleContactChange = (value: string) => {
+    setFormData({ ...formData, contact: value })
+    
+    if (errors.contact) {
+      const error = validateContact(value)
+      setErrors({ ...errors, contact: error })
+    }
+  }
+
+  const handleOccupationChange = (value: string) => {
+    setFormData({ ...formData, studyOrOccupation: value })
+    
+    if (errors.studyOrOccupation) {
+      const error = validateOccupation(value)
+      setErrors({ ...errors, studyOrOccupation: error })
+    }
   }
 
   const handleNext = () => {
@@ -141,67 +239,140 @@ export default function ParticipationForm() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Your Name</label>
+                <label className="block text-sm font-medium mb-2">
+                  Your Name <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  onChange={(e) => handleNameChange(e.target.value)}
+                  className={`w-full px-4 py-3 rounded-xl border ${
+                    errors.name ? 'border-red-500' : 'border-border'
+                  } bg-background focus:outline-none focus:ring-2 ${
+                    errors.name ? 'focus:ring-red-500' : 'focus:ring-primary'
+                  }`}
                   placeholder="Enter your name"
+                  maxLength={50}
                 />
-                {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name}</p>}
+                {errors.name && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-sm text-red-500 mt-1 flex items-center gap-1"
+                  >
+                    ⚠️ {errors.name}
+                  </motion.p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Email or Phone</label>
+                <label className="block text-sm font-medium mb-2">
+                  Email or Phone <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
                   value={formData.contact}
-                  onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  onChange={(e) => handleContactChange(e.target.value)}
+                  className={`w-full px-4 py-3 rounded-xl border ${
+                    errors.contact ? 'border-red-500' : 'border-border'
+                  } bg-background focus:outline-none focus:ring-2 ${
+                    errors.contact ? 'focus:ring-red-500' : 'focus:ring-primary'
+                  }`}
                   placeholder="your@email.com or 9876543210"
                 />
-                {errors.contact && <p className="text-sm text-red-500 mt-1">{errors.contact}</p>}
+                {errors.contact && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-sm text-red-500 mt-1 flex items-center gap-1"
+                  >
+                    ⚠️ {errors.contact}
+                  </motion.p>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Age</label>
+                  <label className="block text-sm font-medium mb-2">
+                    Age <span className="text-red-500">*</span>
+                  </label>
                   <input
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.age}
-                    onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                    onChange={(e) => handleAgeChange(e.target.value)}
+                    className={`w-full px-4 py-3 rounded-xl border ${
+                      errors.age ? 'border-red-500' : 'border-border'
+                    } bg-background focus:outline-none focus:ring-2 ${
+                      errors.age ? 'focus:ring-red-500' : 'focus:ring-primary'
+                    }`}
                     placeholder="25"
-                    min="13"
-                    max="100"
+                    maxLength={3}
                   />
-                  {errors.age && <p className="text-sm text-red-500 mt-1">{errors.age}</p>}
+                  {errors.age && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-sm text-red-500 mt-1 flex items-center gap-1"
+                    >
+                      ⚠️ {errors.age}
+                    </motion.p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">City</label>
+                  <label className="block text-sm font-medium mb-2">
+                    City <span className="text-red-500">*</span>
+                  </label>
                   <input
                     type="text"
                     value={formData.city}
-                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                    onChange={(e) => handleCityChange(e.target.value)}
+                    className={`w-full px-4 py-3 rounded-xl border ${
+                      errors.city ? 'border-red-500' : 'border-border'
+                    } bg-background focus:outline-none focus:ring-2 ${
+                      errors.city ? 'focus:ring-red-500' : 'focus:ring-primary'
+                    }`}
                     placeholder="Mumbai"
+                    maxLength={50}
                   />
-                  {errors.city && <p className="text-sm text-red-500 mt-1">{errors.city}</p>}
+                  {errors.city && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-sm text-red-500 mt-1 flex items-center gap-1"
+                    >
+                      ⚠️ {errors.city}
+                    </motion.p>
+                  )}
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Study or Occupation</label>
+                <label className="block text-sm font-medium mb-2">
+                  Study or Occupation <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
                   value={formData.studyOrOccupation}
-                  onChange={(e) => setFormData({ ...formData, studyOrOccupation: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  onChange={(e) => handleOccupationChange(e.target.value)}
+                  className={`w-full px-4 py-3 rounded-xl border ${
+                    errors.studyOrOccupation ? 'border-red-500' : 'border-border'
+                  } bg-background focus:outline-none focus:ring-2 ${
+                    errors.studyOrOccupation ? 'focus:ring-red-500' : 'focus:ring-primary'
+                  }`}
                   placeholder="Software Engineer, Student, etc."
+                  maxLength={100}
                 />
-                {errors.studyOrOccupation && <p className="text-sm text-red-500 mt-1">{errors.studyOrOccupation}</p>}
+                {errors.studyOrOccupation && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-sm text-red-500 mt-1 flex items-center gap-1"
+                  >
+                    ⚠️ {errors.studyOrOccupation}
+                  </motion.p>
+                )}
               </div>
             </div>
           </motion.div>
