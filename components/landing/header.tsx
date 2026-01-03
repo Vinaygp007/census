@@ -11,7 +11,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 80)
+      setIsScrolled(window.scrollY > 50)
     }
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
@@ -26,14 +26,34 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50">
-        <div className="container mx-auto px-6 py-6">
-          <motion.nav
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="flex items-center justify-between"
-          >
+      <motion.header 
+        className="fixed top-0 left-0 right-0 z-50"
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        {/* Single animated background */}
+        <motion.div
+          className="absolute inset-0 -z-10"
+          animate={{
+            background: isScrolled 
+              ? 'rgba(15, 23, 42, 0.95)'
+              : 'linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.7) 100%)',
+            borderBottom: isScrolled 
+              ? '1px solid rgba(99, 102, 241, 0.3)'
+              : '1px solid transparent',
+            boxShadow: isScrolled
+              ? '0 8px 32px rgba(0, 0, 0, 0.4)'
+              : '0 4px 20px rgba(0, 0, 0, 0.05)',
+          }}
+          transition={{ duration: 0.3 }}
+          style={{
+            backdropFilter: 'blur(16px)',
+          }}
+        />
+
+        <div className="container mx-auto px-6 py-5">
+          <motion.nav className="flex items-center justify-between">
             {/* Logo */}
             <Link href="/">
               <motion.div
@@ -101,8 +121,8 @@ export default function Navbar() {
                       className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 -z-10"
                       style={{
                         background: isScrolled 
-                          ? 'rgba(99, 102, 241, 0.2)' 
-                          : 'rgba(255, 255, 255, 0.8)',
+                          ? 'rgba(99, 102, 241, 0.3)' 
+                          : 'rgba(255, 255, 255, 0.9)',
                         backdropFilter: 'blur(10px)',
                       }}
                     />
@@ -143,8 +163,8 @@ export default function Navbar() {
               animate={{
                 color: isScrolled ? '#ffffff' : '#0f172a',
                 background: isScrolled 
-                  ? 'rgba(99, 102, 241, 0.2)' 
-                  : 'rgba(255, 255, 255, 0.8)',
+                  ? 'rgba(99, 102, 241, 0.3)' 
+                  : 'rgba(255, 255, 255, 0.9)',
               }}
               style={{
                 backdropFilter: 'blur(10px)',
@@ -154,34 +174,7 @@ export default function Navbar() {
             </motion.button>
           </motion.nav>
         </div>
-
-        {/* Scrolled Background - White at top, Dark when scrolled */}
-        <motion.div
-          className="absolute inset-0 -z-10"
-          initial={{ opacity: 0 }}
-          animate={{ 
-            opacity: isScrolled ? 0 : 1,
-          }}
-          transition={{ duration: 0.3 }}
-          style={{
-            background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, transparent 100%)',
-            backdropFilter: 'blur(10px)',
-          }}
-        />
-        
-        <motion.div
-          className="absolute inset-0 -z-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isScrolled ? 1 : 0 }}
-          transition={{ duration: 0.3 }}
-          style={{
-            background: 'rgba(15, 23, 42, 0.9)',
-            backdropFilter: 'blur(20px)',
-            borderBottom: '1px solid rgba(99, 102, 241, 0.2)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
-          }}
-        />
-      </header>
+      </motion.header>
 
       {/* Mobile Menu */}
       <motion.div
@@ -191,7 +184,7 @@ export default function Navbar() {
           y: isMobileMenuOpen ? 0 : -20,
           pointerEvents: isMobileMenuOpen ? 'auto' : 'none',
         }}
-        className="fixed inset-x-4 top-28 z-40 md:hidden"
+        className="fixed inset-x-4 top-24 z-40 md:hidden"
       >
         <div
           className="rounded-2xl p-6 space-y-2"
@@ -213,10 +206,7 @@ export default function Navbar() {
                 transition={{ delay: index * 0.05 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="w-full text-left px-6 py-4 rounded-xl font-semibold text-white"
-                style={{
-                  background: 'rgba(99, 102, 241, 0.1)',
-                }}
+                className="w-full text-left px-6 py-4 rounded-xl font-semibold text-white hover:bg-white/5 transition-colors"
               >
                 {link.name}
               </motion.button>
@@ -247,7 +237,10 @@ export default function Navbar() {
 
       {/* Backdrop */}
       {isMobileMenuOpen && (
-        <div
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 md:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
         />

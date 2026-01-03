@@ -30,7 +30,7 @@ export default function RevealSection() {
   }
 
   return (
-    <section className="py-40 relative overflow-hidden bg-gradient-to-b from-blue-950 via-purple-950 to-slate-950">
+    <section className="py-16 relative overflow-hidden bg-gradient-to-b from-blue-950 via-purple-950 to-slate-950">
       {/* Animated Background Lines */}
       <div className="absolute inset-0">
         {[...Array(5)].map((_, i) => (

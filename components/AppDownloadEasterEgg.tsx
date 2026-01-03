@@ -80,7 +80,7 @@ export default function AppDownloadEasterEgg() {
       </motion.div>
 
       {/* Inline Section */}
-      <section className="py-40 relative overflow-hidden bg-gradient-to-b from-slate-950 via-purple-950 to-blue-950">
+      <section className="py-16 relative overflow-hidden bg-gradient-to-b from-slate-950 via-purple-950 to-blue-950">
         {/* Animated Background */}
         <div className="absolute inset-0">
           <motion.div

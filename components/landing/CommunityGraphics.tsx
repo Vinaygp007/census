@@ -33,7 +33,7 @@ export default function CommunityGraphics() {
   ]
 
   return (
-    <section className="py-32 relative overflow-hidden bg-gradient-to-b from-slate-950 via-purple-950 to-slate-950">
+    <section className="py-16 relative overflow-hidden bg-gradient-to-b from-slate-950 via-purple-950 to-slate-950">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-20">
         <div

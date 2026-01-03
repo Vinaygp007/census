@@ -9,7 +9,7 @@ export default function PhaseQuotes() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   return (
-    <section className="py-32 relative overflow-hidden bg-gradient-to-b from-slate-950 to-blue-950">
+    <section className="py-16 relative overflow-hidden bg-gradient-to-b from-slate-950 to-blue-950">
       {/* Animated Background */}
       <div className="absolute inset-0">
         <motion.div

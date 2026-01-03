@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRight, Sparkles, TrendingUp, Zap } from 'lucide-react'
+import { ArrowRight, Sparkles, TrendingUp, Zap, ChevronDown } from 'lucide-react'
 import { useRef, useEffect, useState } from 'react'
 
 export default function Hero() {
@@ -24,7 +24,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950">
+    <section ref={containerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 pt-20 pb-32">
       {/* Animated Mesh Gradient Background */}
       <div className="absolute inset-0">
         <motion.div
@@ -95,14 +95,14 @@ export default function Hero() {
         />
       ))}
 
-      <div className="container mx-auto px-4 py-20 relative z-10">
+      <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-6xl mx-auto">
           {/* Animated Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-3 px-6 py-3 rounded-full mb-8 relative"
+            className="inline-flex items-center gap-3 px-6 py-3 rounded-full mb-6 relative"
             style={{
               background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)',
               border: '1px solid rgba(99, 102, 241, 0.2)',
@@ -148,11 +148,11 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="mb-8"
+            className="mb-5"
           >
-            <h1 className="text-7xl md:text-9xl font-black leading-[0.9] tracking-tight">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[0.95] tracking-tight">
               <motion.span 
-                className="block text-white mb-6"
+                className="block text-white mb-3"
                 style={{
                   textShadow: '0 0 40px rgba(255, 255, 255, 0.5)',
                 }}
@@ -191,7 +191,7 @@ export default function Hero() {
                 />
               </motion.span>
               <motion.span 
-                className="block text-white mt-6"
+                className="block text-white mt-3"
                 style={{
                   textShadow: '0 0 40px rgba(255, 255, 255, 0.5)',
                 }}
@@ -206,9 +206,9 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="mb-12"
+            className="mb-7"
           >
-            <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base md:text-lg text-blue-100 max-w-3xl mx-auto leading-relaxed">
               Join <span className="font-bold text-white">millions of Indians</span> discovering their emotional state through{' '}
               <span className="relative inline-block">
                 <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
@@ -229,13 +229,13 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-20"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10"
           >
             <Link href="/participate">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group relative px-10 py-5 rounded-full overflow-hidden"
+                className="group relative px-7 py-3.5 rounded-full overflow-hidden"
                 style={{
                   background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)',
                   boxShadow: '0 20px 60px rgba(99, 102, 241, 0.4), 0 0 40px rgba(168, 85, 247, 0.3)',
@@ -250,10 +250,10 @@ export default function Hero() {
                   whileHover={{ x: '0%' }}
                   transition={{ duration: 0.3 }}
                 />
-                <span className="relative z-10 flex items-center gap-3 text-white font-bold text-lg">
-                  <Zap className="w-5 h-5" fill="white" />
+                <span className="relative z-10 flex items-center gap-2 text-white font-bold text-sm md:text-base">
+                  <Zap className="w-4 h-4 md:w-5 md:h-5" fill="white" />
                   Discover Your Phase
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </motion.button>
             </Link>
@@ -262,7 +262,7 @@ export default function Hero() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-10 py-5 rounded-full font-bold text-lg text-white backdrop-blur-sm"
+                className="px-7 py-3.5 rounded-full font-bold text-sm md:text-base text-white backdrop-blur-sm"
                 style={{
                   background: 'rgba(99, 102, 241, 0.1)',
                   border: '2px solid rgba(99, 102, 241, 0.3)',
@@ -279,7 +279,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="grid grid-cols-3 gap-6 max-w-4xl mx-auto"
+            className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto mb-16"
           >
             {[
               { label: 'Participants', value: '100K+', icon: '👥', color: 'from-blue-500 to-cyan-500' },
@@ -295,7 +295,7 @@ export default function Hero() {
                   y: -10,
                   rotateY: 5,
                 }}
-                className="group relative p-8 rounded-3xl backdrop-blur-xl"
+                className="group relative p-5 rounded-3xl backdrop-blur-xl"
                 style={{
                   background: 'rgba(255, 255, 255, 0.03)',
                   border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -310,7 +310,7 @@ export default function Hero() {
                 
                 <div className="relative z-10">
                   <motion.div 
-                    className="text-5xl mb-4"
+                    className="text-3xl mb-2"
                     animate={{
                       scale: [1, 1.1, 1],
                       rotate: [0, 5, -5, 0],
@@ -323,10 +323,10 @@ export default function Hero() {
                   >
                     {stat.icon}
                   </motion.div>
-                  <div className={`text-4xl md:text-5xl font-black mb-3 text-transparent bg-clip-text bg-gradient-to-br ${stat.color}`}>
+                  <div className={`text-2xl md:text-3xl font-black mb-1 text-transparent bg-clip-text bg-gradient-to-br ${stat.color}`}>
                     {stat.value}
                   </div>
-                  <div className="text-sm font-semibold text-blue-200 tracking-wide uppercase">
+                  <div className="text-xs font-semibold text-blue-200 tracking-wide uppercase">
                     {stat.label}
                   </div>
                 </div>
@@ -353,26 +353,67 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Enhanced Scroll Indicator */}
       <motion.div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.5, duration: 1 }}
       >
         <motion.div
           animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="flex flex-col items-center gap-2"
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="flex flex-col items-center gap-2.5 cursor-pointer"
         >
-          <div className="w-6 h-10 rounded-full border-2 border-blue-400/50 flex items-start justify-center p-2">
+          {/* Animated Circle with Mouse Icon */}
+          <div 
+            className="relative w-7 h-11 rounded-full flex items-start justify-center pt-2"
+            style={{
+              background: 'rgba(99, 102, 241, 0.1)',
+              border: '2px solid rgba(99, 102, 241, 0.4)',
+              boxShadow: '0 0 20px rgba(99, 102, 241, 0.3), inset 0 0 20px rgba(99, 102, 241, 0.1)',
+            }}
+          >
             <motion.div
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="w-1 h-3 bg-blue-400 rounded-full"
+              animate={{ y: [0, 8, 0], opacity: [1, 0.3, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="w-1.5 h-3 rounded-full"
+              style={{
+                background: 'linear-gradient(180deg, #6366f1, #a855f7)',
+                boxShadow: '0 0 10px rgba(99, 102, 241, 0.8)',
+              }}
             />
           </div>
-          <span className="text-xs text-blue-400 font-medium">Scroll to explore</span>
+          
+          {/* Animated Text */}
+          <motion.div
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="flex items-center gap-1.5"
+          >
+            <span className="text-xs font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+              Scroll to explore
+            </span>
+            <motion.div
+              animate={{ y: [0, 3, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <ChevronDown className="w-3.5 h-3.5 text-blue-400" />
+            </motion.div>
+          </motion.div>
+
+          {/* Pulsing Ring */}
+          <motion.div
+            className="absolute -inset-4 rounded-full"
+            style={{
+              border: '2px solid rgba(99, 102, 241, 0.2)',
+            }}
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.5, 0, 0.5],
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
         </motion.div>
       </motion.div>
     </section>
